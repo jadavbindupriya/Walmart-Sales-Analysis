@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
-
 
 # Import necessary libraries
 import pandas as pd
@@ -14,7 +12,6 @@ from datetime import datetime
 
 
 # In this project, we focused to answer the following questions:
-# 
 # 1.Which store has minimum and maximum sales?
 # 2.Which store has maximum standard deviation i.e., the sales vary a lot. Also, 3.find out the coefficient of mean to standard deviation
 # 4.Which store/s has good quarterly growth rate in Q3’2012
@@ -36,38 +33,21 @@ from datetime import datetime
 # CPI – Prevailing consumer price index
 # Unemployment - Prevailing unemployment rate
 
-# In[11]:
-
 
 # Load dataset
 data = pd.read_csv(r"C:\Users\91832\Downloads\Walmart_Store_sales.csv")
 data
-
-
-# In[12]:
-
-
 print(data.head())  # To check if the file loads properly
 
 
 # DATA PREPARATION
-
-# In[13]:
-
-
 # Convert date to datetime format and show dataset information
 data['Date'] = pd.to_datetime(data['Date'], format="%d-%m-%Y")
 data.info()
 
-
-# In[14]:
-
-
 # checking for missing values
 data.isnull().sum()
 
-
-# In[15]:
 
 
 # Splitting Date and create new columns (Day, Month, and Year)
@@ -75,10 +55,6 @@ data["Day"]= pd.DatetimeIndex(data['Date']).day
 data['Month'] = pd.DatetimeIndex(data['Date']).month
 data['Year'] = pd.DatetimeIndex(data['Date']).year
 data
-
-
-# In[16]:
-
 
 plt.figure(figsize=(15,7))
 
@@ -121,15 +97,9 @@ plt.ylabel('Total Sales');
 
 # Q2: Which store has maximum standard deviation i.e., the sales vary a lot. Also, find out the coefficient of mean to standard deviation?
 
-# In[17]:
-
-
 # Which store has maximum standard deviation
 data_std = pd.DataFrame(data.groupby('Store')['Weekly_Sales'].std().sort_values(ascending=False))
 print("The store has maximum standard deviation is "+str(data_std.head(1).index[0])+" with {0:.0f} $".format(data_std.head(1).Weekly_Sales[data_std.head(1).index[0]]))
-
-
-# In[18]:
 
 
 # Distribution of store has maximum standard deviation
@@ -138,17 +108,10 @@ sns.distplot(data[data['Store'] == data_std.head(1).index[0]]['Weekly_Sales'])
 plt.title('The Sales Distribution of Store #'+ str(data_std.head(1).index[0]));
 
 
-# In[19]:
-
-
 # Coefficient of mean to standard deviation
 coef_mean_std = pd.DataFrame(data.groupby('Store')['Weekly_Sales'].std() / data.groupby('Store')['Weekly_Sales'].mean())
 coef_mean_std = coef_mean_std.rename(columns={'Weekly_Sales':'Coefficient of mean to standard deviation'})
 coef_mean_std
-
-
-# In[20]:
-
 
 # Distribution of store has maximum coefficient of mean to standard deviation
 coef_mean_std_max = coef_mean_std.sort_values(by='Coefficient of mean to standard deviation')
@@ -158,9 +121,6 @@ plt.title('The Sales Distribution of Store #'+str(coef_mean_std_max.tail(1).inde
 
 
 # Q3: Which store/s has good quarterly growth rate in Q3’2012
-
-# In[22]:
-
 
 import matplotlib.pyplot as plt
 
@@ -182,10 +142,6 @@ plt.ylabel("Total Sales")
 plt.title("Comparison of Q2 and Q3 Sales in 2012")
 plt.show()
 
-
-# In[23]:
-
-
 #  store/s has good quarterly growth rate in Q3’2012 - .sort_values(by='Weekly_Sales')
 print('Store have good quarterly growth rate in Q3’2012 is Store '+str(Q3.idxmax())+' With '+str(Q3.max())+' $')
 
@@ -200,9 +156,6 @@ print('Store have good quarterly growth rate in Q3’2012 is Store '+str(Q3.idxm
 # Thanksgiving: 26-Nov-10, 25-Nov-11, 23-Nov-12, 29-Nov-13
 # 
 # Christmas: 31-Dec-10, 30-Dec-11, 28-Dec-12, 27-Dec-13
-
-# In[24]:
-
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -248,10 +201,6 @@ plot_line(total_sales, Christmas, 'Christmas')
 
 
 # The sales increased during thanksgiving. And the sales decreased during christmas.
-
-# In[26]:
-
-
 import pandas as pd
 
 # Ensure Date column is in datetime format
@@ -263,10 +212,6 @@ Super_Bowl = pd.to_datetime(['12-2-2010', '11-2-2011', '10-2-2012'], format='%d-
 # Filter data
 filtered_data = data.loc[data['Date'].isin(Super_Bowl)]
 print(filtered_data)
-
-
-# In[27]:
-
 
 # Yearly Sales in holidays
 Super_Bowl_df = pd.DataFrame(data.loc[data.Date.isin(Super_Bowl)].groupby('Year')['Weekly_Sales'].sum())
@@ -281,9 +226,6 @@ Christmas_df.plot(kind='bar',legend=False,title='Yearly Sales in Christmas holid
 
 
 # Q5: Provide a monthly and semester view of sales in units and give insights
-
-# In[28]:
-
 
 # Monthly view of sales for each years
 plt.scatter(data[data.Year==2010]["Month"],data[data.Year==2010]["Weekly_Sales"])
@@ -303,9 +245,6 @@ plt.xlabel("months")
 plt.ylabel("Weekly Sales")
 plt.title("Monthly view of sales in 2012")
 plt.show()
-
-
-# In[29]:
 
 
 # Monthly view of sales for all years
@@ -335,10 +274,6 @@ plt.gca().spines["right"].set_visible(False)
 plt.show()
 
 
-
-# In[30]:
-
-
 # Yearly view of sales
 plt.figure(figsize=(10,6))
 data.groupby("Year")[["Weekly_Sales"]].sum().plot(kind='bar',legend=False)
@@ -349,9 +284,6 @@ plt.title("Yearly view of sales");
 
 # Build prediction models to forecast demand (Modeling)
 
-# In[31]:
-
-
 # find outliers 
 fig, axs = plt.subplots(4,figsize=(6,18))
 X = data[['Temperature','Fuel_Price','CPI','Unemployment']]
@@ -359,15 +291,9 @@ for i,column in enumerate(X):
     sns.boxplot(data[column], ax=axs[i])
 
 
-# In[32]:
-
-
 # drop the outliers     
 data_new = data[(data['Unemployment']<10) & (data['Unemployment']>4.5) & (data['Temperature']>10)]
 data_new
-
-
-# In[33]:
 
 
 # check outliers 
@@ -379,8 +305,6 @@ for i,column in enumerate(X):
 
 # BUILD MODEL
 
-# In[34]:
-
 
 # Import sklearn 
 from sklearn.ensemble import RandomForestRegressor
@@ -389,8 +313,6 @@ from sklearn import metrics
 from sklearn.linear_model import LinearRegression
 
 
-# In[35]:
-
 
 # Select features and target 
 X = data_new[['Store','Fuel_Price','CPI','Unemployment','Day','Month','Year']]
@@ -398,9 +320,6 @@ y = data_new['Weekly_Sales']
 
 # Split data to train and test (0.80:0.20)
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
-
-
-# In[36]:
 
 
 # Linear Regression model
@@ -423,11 +342,6 @@ print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_p
 # Scatter plot (fixed)
 sns.scatterplot(x=y_pred, y=y_test)
 
-
-
-# In[37]:
-
-
 import seaborn as sns
 
 # Random Forest Regressor Model
@@ -447,31 +361,12 @@ print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_p
 sns.scatterplot(x=y_pred, y=y_test)
 
 
-# In[ ]:
 
 
 
 
 
-# In[ ]:
 
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
