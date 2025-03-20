@@ -10,14 +10,15 @@ Provide a monthly and semester view of sales in units and give insights.
 Build prediction to forecast demand.
 
 # 2.Python Libraries used
-sklearn.
-Pandas.
-numpy.
-seaborn
-matplotlib.
-datetime.
+1.sklearn
+2.Pandas
+3.numpy
+4.seaborn
+5.matplotlib
+6.datetime
 # 3.Dataset
-There are sales data available for 45 stores of Walmart in Kaggle. This is the data that covers sales from 2010-02-05 to 2012-11-01.
+There are sales [data](https://www.kaggle.com/datasets/aditya6196/retail-analysis-with-walmart-data)available for 45 stores of Walmart in Kaggle
+. This is the data that covers sales from 2010-02-05 to 2012-11-01.
 # 4.Implementation
 In this project, we used RandomForestRegressor and LinearRegression to predict of sales. The data have been split into training and testing with a ratio of 80:20
 
